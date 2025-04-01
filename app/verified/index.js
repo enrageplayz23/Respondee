@@ -12,56 +12,20 @@ import { useRouter } from 'expo-router';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native';
 
-
 export default function HomeScreen() {
   const router = useRouter();
   const [showBanner, setShowBanner] = useState(true);
   const [showFloatingIcon, setShowFloatingIcon] = useState(false);
   const actions = [
-    { label: 'File Complaint', icon: 'document-text-outline', route: '/home/complaint' },
-    { label: 'Request Service', icon: 'construct-outline', route: '/home/request' } , 
-    { label: 'Track Status', icon: 'time-outline', route: '/home/track' },
-    { label: 'View Responses', icon: 'chatbox-ellipses-outline', route: '/home/responses' },
-    { label: 'Map Issues', icon: 'map-outline', route: '/home/map' },
-    { label: 'Analytics / Stats', icon: 'stats-chart-outline', route: '/home/analytics' },
-    { label: 'FAQs / Help', icon: 'help-circle-outline', route: '/home/faq' },
-    { label: 'Feedback', icon: 'megaphone-outline', route: '/home/feedback' },
+    { label: 'File Complaint', icon: 'document-text-outline', route: '/verified/complaint' },
+    { label: 'Request Service', icon: 'construct-outline', route: '/verified/request' },
+    { label: 'Track Status', icon: 'time-outline', route: '/track' },
+    { label: 'View Responses', icon: 'chatbox-ellipses-outline', route: '/verified/responses' },
+    { label: 'Map Issues', icon: 'map-outline', route: '/verified/map' },
+    { label: 'Analytics / Stats', icon: 'stats-chart-outline', route: '/verified/analytics' },
+    { label: 'FAQs / Help', icon: 'help-circle-outline', route: '/verified/faq' },
+    { label: 'Feedback', icon: 'megaphone-outline', route: '/verified/feedback' },
   ];
-  // Animation values
-  const bannerOpacity = useRef(new Animated.Value(1)).current;
-  const bubbleScale = useRef(new Animated.Value(0)).current;
-
-  const handleDismiss = () => {
-    // Fade out banner
-    Animated.timing(bannerOpacity, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setShowBanner(false);
-      setShowFloatingIcon(true);
-
-      // Pop in floating bubble
-      Animated.spring(bubbleScale, {
-        toValue: 1,
-        friction: 5,
-        useNativeDriver: true,
-      }).start();
-    });
-  };
-
-  const handleRestoreBanner = () => {
-    // Hide floating icon
-    Animated.timing(bubbleScale, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(() => {
-      setShowFloatingIcon(false);
-      setShowBanner(true);
-      bannerOpacity.setValue(1); // reset opacity
-    });
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -78,7 +42,7 @@ export default function HomeScreen() {
           <Ionicons name="person-circle-outline" size={70} color="#3E4A5A" />
           <View style={{ marginLeft: 8 }}>
             <Text style={styles.name}>Hi, Name</Text>
-            <Text style={styles.verifyText}>Verify your account</Text>
+            <Text style={styles.verifyText}>+639222555100</Text>
           </View>
         </View>
         <Image source={require('../../assets/images/176.png')} style={styles.promoImage1} />
@@ -140,45 +104,7 @@ export default function HomeScreen() {
 
       <View style={{ flex: 1 }} />
       </ScrollView>
-      {/* Animated Verify Banner */}
-      {showBanner && (
-        <Animated.View style={[styles.verifyBanner, { opacity: bannerOpacity }]}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.verifyTitle}>Verify Account</Text>
-            <Text style={styles.verifyDescription}>
-              Get full access to all Respondee services, get verified now!
-            </Text>
-          </View>
 
-          <TouchableOpacity
-            style={styles.verifyBtn}
-            onPress={() => router.push('/verify/verify-start')}
-          >
-            <Text style={styles.verifyBtnText}>Verify Now ➤</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={handleDismiss} style={styles.dismiss}>
-            <Ionicons name="close-outline" size={18} color="#fff" />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-
-      {/* Floating Animated Button */}
-      {showFloatingIcon && (
-        <Animated.View style={[styles.floatingBubble, { transform: [{ scale: bubbleScale }] }]}>
-          <TouchableOpacity onPress={handleRestoreBanner}>
-            <View style={{ position: 'relative' }}>
-              <Ionicons name="person-circle" size={48} color="#3E4A5A" />
-              <Ionicons
-                name="checkmark-circle"
-                size={18}
-                color="#2DC4A4"
-                style={styles.checkBadge}
-              />
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
     </SafeAreaView>
   );
 }
@@ -218,10 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
-  verifyText: {
-    fontSize: 12,
-    color: '#5B6B7F',
-  },
+
   promoImage: {
     width: 140,        // ⬅️ increased from 60
     height: 50,       // ⬅️ increased from 60
@@ -235,46 +158,8 @@ const styles = StyleSheet.create({
     borderRadius: 60,  // optional for rounded corners
     resizeMode: 'contain',
   },
-  verifyBanner: {
-    position: 'absolute',
-    bottom: 90,             // distance from bottom of screen (adjust as needed)
-    left: 24,               // match your screen padding
-    right: 24,
-    backgroundColor: '#4B6176',
-    borderRadius: 10,
-    padding: 16,
-    paddingRight: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 999,            // make sure it stays above other components
-    elevation: 5,           // shadow on Android
-    shadowColor: '#000',    // shadow for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
+
   
-  verifyTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  verifyDescription: {
-    color: '#fff',
-    fontSize: 12,
-  },
-  verifyBtn: {
-    backgroundColor: '#FE712D',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 6,
-    marginLeft: 12,
-  },
-  verifyBtnText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
   dismiss: {
     position: 'absolute',
     top: 6,

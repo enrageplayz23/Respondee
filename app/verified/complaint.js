@@ -34,7 +34,7 @@ export default function ComplaintScreen() {
       Alert.alert('Incomplete', 'Please fill out all fields and accept the terms.');
       return;
     }
-    Alert.alert('Please verify first before submitting a report');
+    Alert.alert('Report, Submitted');
   };
 
   return (
